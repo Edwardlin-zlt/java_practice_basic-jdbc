@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 public class JDBCUtils {
-    private static String url;
+    private static String url; // 要不要加final? TODO
     private static String user;
     private static String password;
     private static String driver;

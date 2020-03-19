@@ -3,34 +3,35 @@ package com.thoughtworks;
 import com.thoughtworks.utils.JDBCUtils;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class StudentRepository {
     public static Connection conn;
+
+    static {
+        try {
+            conn = JDBCUtils.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void save(List<Student> students) {
         students.forEach(this::save);
     }
 
-    private static Connection getConnection() throws SQLException {
-        conn = JDBCUtils.getConnection();
-        return conn;
-    }
-
     public void save(Student student) {
-        PreparedStatement preparedStatement = null; // 可不可以把这两句放到static去，每次close之后变回null
-        Connection connection = null;
+//        PreparedStatement preparedStatement = null; // 可不可以把这两句放到static去，每次close之后变回null TODO
+//        Connection connection = null; // ＣＬＯＳＥ了反而跑不了 TODO
         try {
-            connection = Optional.ofNullable(conn).orElse(getConnection()); // 可不可以不关闭该类的conn让每个方法调用的时候都用该类的同一个conn,这样就不用每次都去get一个Conn了
+//            Connection connection = Optional.ofNullable(conn).orElse(getConnection()); // 可不可以不关闭该类的conn让每个方法调用的时候都用该类的同一个conn,这样就不用每次都去get一个Conn了 TODO
             String sql = "INSERT INTO students VALUES (?, ?, ?, ?, ?, ?);"; // sql 的：写不写
-            preparedStatement = setStudentInfoIntoSQL(student, connection, sql);
+            PreparedStatement preparedStatement = setStudentInfoIntoSQL(student, conn, sql);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,22 +42,16 @@ public class StudentRepository {
     }
 
     public List<Student> query() {
-        PreparedStatement statement = null;
-        Connection connection = null;
         List<Student> students = new ArrayList<>();
         try {
-            connection = JDBCUtils.getConnection();
             String sql = "SELECT * FROM students;";
-            statement = connection.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery();
             students = generateStudentsFromQueryResult(resultSet);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        } finally {
-//            JDBCUtils.close(statement, connection);
-//        }
         return students;
     }
 
@@ -76,39 +71,27 @@ public class StudentRepository {
     }
 
     public List<Student> queryByClassId(String classId) {
-        PreparedStatement statement = null;
-        Connection connection = null;
         try {
-            connection = JDBCUtils.getConnection();
             String sql = "SELECT * from students where class_id=?";
-            statement = connection.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, classId);
             ResultSet resultSet = statement.executeQuery();
             return generateStudentsFromQueryResult(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        } finally {
-//            JDBCUtils.close(statement, connection);
-//        }
         return new ArrayList<>();
     }
 
     public void update(String id, Student student) {
-        PreparedStatement statement = null;
-        Connection connection = null;
         try {
-            connection = JDBCUtils.getConnection();
             String sql = "UPDATE students SET id=?, name=?, gender=?, admin_year=?, birthday=?, class_id=? where id=?";
-            statement = setStudentInfoIntoSQL(student, connection, sql);
+            PreparedStatement statement = setStudentInfoIntoSQL(student, conn, sql);
             statement.setInt(7, Integer.parseInt(id));
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        } finally {
-//            JDBCUtils.close(statement, connection);
-//        }
     }
 
     private PreparedStatement setStudentInfoIntoSQL(Student student, Connection connection, String sql) throws SQLException {
@@ -123,19 +106,13 @@ public class StudentRepository {
     }
 
     public void delete(String id) {
-        PreparedStatement statement = null;
-        Connection connection = null;
         try {
-            connection = JDBCUtils.getConnection();
             String sql = "DELETE FROM students where id = ?";
-            statement = connection.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql); // TODO　如何关闭资源
             statement.setInt(1, Integer.parseInt(id));
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        } finally {
-//            JDBCUtils.close(statement, connection);
-//        }
     }
 }
