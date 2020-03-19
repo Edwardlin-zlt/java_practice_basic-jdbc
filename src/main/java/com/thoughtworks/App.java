@@ -6,7 +6,8 @@ public class App {
 
   public static void main(String[] args) {
     // 创建一批学生
-    Student student1 = new Student("001", "张三", "男", 2020, "1994-01-12", "1-13");
+    Student student1 = new Student("001", "张三", "男",
+        2020, "1994-01-12", "1-13");
     Student student2 = new Student("002", "李四", "男", 2020, "1994-05-25", "1-1");
     Student student3 = new Student("003", "王五", "男", 2019, "1995-04-02", "2-10");
     Student student4 = new Student("004", "周梅", "女", 2020, "1993-06-16", "1-1");

@@ -34,16 +34,24 @@ public class JDBCUtils {
         }
     }
 
-    public static Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException { // 数据库连错了，基本就要终止程序了
         return DriverManager.getConnection(url, user, password);
     }
 
     public static void close(Statement stmt, Connection conn) {
-        try {
-            Objects.requireNonNull(stmt).close();
-            Objects.requireNonNull(conn).close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (stmt != null) {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
