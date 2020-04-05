@@ -26,19 +26,13 @@ public class StudentRepository {
     }
 
     public void save(Student student) {
-//        PreparedStatement preparedStatement = null; // 可不可以把这两句放到static去，每次close之后变回null TODO
-//        Connection connection = null; // ＣＬＯＳＥ了反而跑不了 TODO
         try {
-//            Connection connection = Optional.ofNullable(conn).orElse(getConnection()); // 可不可以不关闭该类的conn让每个方法调用的时候都用该类的同一个conn,这样就不用每次都去get一个Conn了 TODO
-            String sql = "INSERT INTO students VALUES (?, ?, ?, ?, ?, ?);"; // sql 的：写不写
+            String sql = "INSERT INTO students VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = setStudentInfoIntoSQL(student, conn, sql);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        } finally {
-//            JDBCUtils.close(preparedStatement, connection);
-//        }
     }
 
     public List<Student> query() {
