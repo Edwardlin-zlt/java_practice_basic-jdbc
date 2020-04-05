@@ -1,91 +1,31 @@
 package com.thoughtworks;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.Arrays;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 public class AppTest {
+    StudentRepository repository = new StudentRepository();
 
-  private List<Transaction> transactions;
+    @BeforeAll
+    void setUp() {
+        Student student1 = new Student("001", "张三", "男", 2020, "1994-01-12", "1-13");
+        Student student2 = new Student("002", "李四", "男", 2020, "1994-05-25", "1-1");
+        Student student3 = new Student("003", "王五", "男", 2019, "1995-04-02", "2-10");
+        Student student4 = new Student("004", "周梅", "女", 2020, "1993-06-16", "1-1");
+        Student student5 = new Student("005", "钱风", "男", 2020, "1993-01-10", "1-1");
+        Student student6 = new Student("006", "吴兰", "女", 2019, "1995-06-09", "2-1");
+        Student student7 = new Student("007", "李云", "男", 2019, "1993-08-11", "1-1");
+        repository.save(Arrays.asList(student1, student2, student3, student4, student5, student6, student7));
+    }
 
-  @BeforeEach
-  void setUp() {
-    Trader raoul = new Trader("Raoul", "Cambridge");
-    Trader mario = new Trader("Mario", "Milan");
-    Trader alan = new Trader("Alan", "Cambridge");
-    Trader brian = new Trader("Brian", "Cambridge");
+    @Test
+    @DisplayName("查找所有学生并打印")
+    void queryAll(){
+        repository.query().forEach(System.out::println);
+    }
 
-    transactions = Arrays.asList(new Transaction(brian, 2011, 300),
-        new Transaction(raoul, 2012, 1000),
-        new Transaction(raoul, 2011, 400),
-        new Transaction(mario, 2012, 710), new Transaction(mario, 2012, 700),
-        new Transaction(alan, 2012, 950)
-    );
-  }
-
-  @Test
-  void get2011Transactions_should_success() {
-    List<Transaction> result = App.get2011Transactions(transactions);
-
-    String excepted = "[{Trader:Brian in Cambridge, year: 2011, value:300}, {Trader:Raoul in Cambridge, year: 2011, value:400}]";
-    assertEquals(excepted, result.toString());
-  }
-
-  @Test
-  void getTradersCity_should_success() {
-    List<String> result = App.getTradersCity(transactions);
-
-    String excepted = "[Cambridge, Milan]";
-    assertEquals(excepted, result.toString());
-  }
-
-  @Test
-  void getCambridgeTraders_should_success() {
-    List<Trader> result = App.getCambridgeTraders(transactions);
-
-    String excepted = "[Trader:Alan in Cambridge, Trader:Brian in Cambridge, Trader:Raoul in Cambridge]";
-    assertEquals(excepted, result.toString());
-  }
-
-  @Test
-  void getTradersName_should_success() {
-    List<String> result = App.getTradersName(transactions);
-
-    String excepted = "[Alan, Brian, Mario, Raoul]";
-    assertEquals(excepted, result.toString());
-  }
-
-  @Test
-  void hasMilanTrader_should_success() {
-    boolean result = App.hasMilanTrader(transactions);
-
-    assertTrue(result);
-  }
-
-  @Test
-  void getCambridgeTransactionsValue_should_success() {
-    List<Integer> result = App.getCambridgeTransactionsValue(transactions);
-    System.out.println(result);
-    String excepted = "[300, 1000, 400, 950]";
-    assertEquals(excepted, result.toString());
-  }
-
-  @Test
-  void getMaxTransactionValue_should_success() {
-    int result = App.getMaxTransactionValue(transactions);
-
-    assertEquals(1000, result);
-  }
-
-  @Test
-  void getMinTransaction_should_success() {
-    Transaction result = App.getMinTransaction(transactions);
-
-    String excepted = "{Trader:Brian in Cambridge, year: 2011, value:300}";
-    assertEquals(excepted, result.toString());
-  }
 }
+

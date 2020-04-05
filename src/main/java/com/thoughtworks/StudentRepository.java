@@ -8,15 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentRepository {
-    public static Connection conn;
-
-    static {
-        try {
-            conn = JDBCUtils.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void save(List<Student> students) {
         students.forEach(this::save);
@@ -28,8 +19,7 @@ public class StudentRepository {
             String sql = "INSERT INTO student(id, name, gender, admin_year, birthday, class_id)" +
                 " VALUES (?, ?, ?, ?, ?, ?)";
             SqlUtils.executeUpdate(conn, sql,
-                student.getId(), student.getName(),
-                student.getGender(), student.getAdmissionYear(),
+                student.getId(), student.getName(), student.getGender(), student.getAdmissionYear(),
                 student.getBirthday(), student.getClassId());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -63,7 +53,7 @@ public class StudentRepository {
     public int update(String id, Student student) {
         try {
             Connection conn = JDBCUtils.getConnection();
-            String sql = "UPDATE students SET id=?, name=?, gender=?, admin_year=?, birthday=?, class_id=? where id=?";
+            String sql = "UPDATE student SET id=?, name=?, gender=?, admin_year=?, birthday=?, class_id=? where id=?";
             return SqlUtils.executeUpdate(conn, sql,
                 student.getId(), student.getName(), student.getGender(),
                 student.getAdmissionYear(), student.getBirthday(), student.getClassId(),

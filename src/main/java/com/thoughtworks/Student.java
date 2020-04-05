@@ -5,8 +5,12 @@ public class Student {
     private String id;
     private String name;
     private String gender;
+
+    @ColumnName("admin_year")
     private int admissionYear;
     private String birthday;
+
+    @ColumnName("class_id")
     private String classId;
 
     public Student() {
