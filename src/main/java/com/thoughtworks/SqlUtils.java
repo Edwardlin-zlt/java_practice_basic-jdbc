@@ -46,7 +46,7 @@ public class SqlUtils {
                 for (int i = 0; i < columnCount; i++) {
                     String columnLabel = metaData.getColumnLabel(i + 1);
                     Object columnValue = rs.getObject(columnLabel);
-                    Field field = t.getClass().getDeclaredField(columnLabel);
+                    Field field = clazz.getDeclaredField(columnLabel);
                     field.set(t, columnValue);
                 }
                 objects.add(t);
