@@ -1,7 +1,4 @@
-package com.thoughtworks;
-
-import com.thoughtworks.utils.ColumnName;
-import com.thoughtworks.utils.JDBCUtils;
+package com.thoughtworks.utils;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;

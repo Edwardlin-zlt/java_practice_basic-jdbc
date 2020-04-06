@@ -1,6 +1,7 @@
 package com.thoughtworks;
 
 import com.thoughtworks.utils.JDBCUtils;
+import com.thoughtworks.utils.SqlUtils;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -18,7 +19,7 @@ public class StudentRepository {
             Connection conn = JDBCUtils.getConnection();
             String sql = "INSERT INTO student(id, name, gender, admin_year, birthday, class_id)" +
                 " VALUES (?, ?, ?, ?, ?, ?)";
-            com.thoughtworks.SqlUtils.executeUpdate(conn, sql,
+            SqlUtils.executeUpdate(conn, sql,
                 student.getId(), student.getName(), student.getGender(), student.getAdmissionYear(),
                 student.getBirthday(), student.getClassId());
         } catch (SQLException e) {
@@ -31,7 +32,7 @@ public class StudentRepository {
         try {
             Connection conn = JDBCUtils.getConnection();
             String sql = "select id, name, gender, admin_year, birthday, class_id from student";
-            students = com.thoughtworks.SqlUtils.executeQuery(conn, sql, Student.class);
+            students = SqlUtils.executeQuery(conn, sql, Student.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -43,7 +44,7 @@ public class StudentRepository {
         try {
             Connection conn = JDBCUtils.getConnection();
             String sql = "select id, name, gender, admin_year, birthday, class_id from student where class_id = ?";
-            students = com.thoughtworks.SqlUtils.executeQuery(conn, sql, Student.class, classId);
+            students = SqlUtils.executeQuery(conn, sql, Student.class, classId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,7 +55,7 @@ public class StudentRepository {
         try {
             Connection conn = JDBCUtils.getConnection();
             String sql = "UPDATE student SET id=?, name=?, gender=?, admin_year=?, birthday=?, class_id=? where id=?";
-            return com.thoughtworks.SqlUtils.executeUpdate(conn, sql,
+            return SqlUtils.executeUpdate(conn, sql,
                 student.getId(), student.getName(), student.getGender(),
                 student.getAdmissionYear(), student.getBirthday(), student.getClassId(),
                 student.getId());
@@ -68,7 +69,7 @@ public class StudentRepository {
         try {
             String sql = "DELETE FROM student where id = ?";
             Connection conn = JDBCUtils.getConnection();
-            return com.thoughtworks.SqlUtils.executeUpdate(conn, sql, id);
+            return SqlUtils.executeUpdate(conn, sql, id);
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;

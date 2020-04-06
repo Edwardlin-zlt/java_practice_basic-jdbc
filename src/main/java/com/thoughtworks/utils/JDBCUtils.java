@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class JDBCUtils {
-    private static String url; // 要不要加final? TODO
+    private static String url;
     private static String user;
     private static String password;
 
@@ -40,17 +40,17 @@ public class JDBCUtils {
             }
         }
 
-        if (conn != null) {
+        if (stmt != null) {
             try {
-                conn.close();
+                stmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
 
-        if (stmt != null) {
+        if (conn != null) {
             try {
-                stmt.close();
+                conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
